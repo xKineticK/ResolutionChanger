@@ -1,10 +1,10 @@
-from gui import *
-from software import *
+# main.py
+import sys
+from PyQt6.QtWidgets import QApplication
+from gui import ModernResolutionChanger
 
 if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    Dialog = QtWidgets.QDialog()
-    ui = Ui_Dialog()
-    ui.setupUi(Dialog)
-    Dialog.show()
+    app = QApplication(sys.argv)
+    window = ModernResolutionChanger()
+    window.show()
     sys.exit(app.exec())
