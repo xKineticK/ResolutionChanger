@@ -5,8 +5,9 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import QFont, QMouseEvent, QIcon
 from PyQt6.QtCore import Qt, QPoint, QSize
-from logic import resolutions, games, info, open_game_in_steam
-from loggingLib import attach_console_widget
+from logic import resolutions, info, open_game_in_steam
+from games.steam import load_games
+from loggingLib import attach_console_widget, printInfo, printWarning, printError
 
 class ModernResolutionChanger(QDialog):
     def __init__(self):
@@ -109,8 +110,11 @@ class ModernResolutionChanger(QDialog):
         # Juegos
         game_label = QLabel("Select Game:")
         game_label.setFont(QFont("Segoe UI", 12, QFont.Weight.Bold))
+        
+        games = load_games()
+        self.games = games  # Guardamos los objetos para acceder luego
         self.game_list = QListWidget()
-        self.game_list.addItems([game.name for game in games])
+        self.game_list.addItems([game.name for game in games])  # Lista de nombres
         self.game_list.setMaximumHeight(130)
         self.game_list.itemClicked.connect(self.selected_game)
 
@@ -208,12 +212,9 @@ class ModernResolutionChanger(QDialog):
 
     def selected_game(self, item):
         self.game_var = item.text()
-        for game in games:
-            if game.name == self.game_var:
-                self.setWindowIcon(QIcon(f"images/{game.icon}"))
 
     def play_game(self):
         self.steam_path = self.path_edit.text()
         self.get_resolution()
         if self.steam_path and self.game_var and self.resolution_var:
-            open_game_in_steam(self.steam_path, self.game_var, self.resolution_var)
+            open_game_in_steam(self.steam_path, self.game_var, self.resolution_var, self.games)
