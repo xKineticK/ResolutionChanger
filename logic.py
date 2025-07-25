@@ -45,20 +45,15 @@ def get_running_app_id():
 
 def monitor_game_via_registry(target_game_name, target_game_id):
     printInfo(f"Waiting for game {target_game_name} to start...")
-    printInfo(target_game_id)
     time.sleep(2)  # Espera inicial para evitar problemas de sincronización
     while True:
         running_id = get_running_app_id()
-        printInfo(f"Current RunningAppID: {running_id}")
-        printInfo(f"Target Game ID: {target_game_id}")
         if int(running_id) == int(target_game_id):
             printInfo(f"Running {target_game_name}. Waiting to exit to restore resolution.")
             break
         time.sleep(1)
 
     while True:
-        # printInfo(f"Current RunningAppID: {running_id}")
-        # printInfo(f"Target Game ID: {target_game_id}")
         running_id = get_running_app_id()
         if int(running_id) != int(target_game_id):
             printInfo(f"Game {target_game_name} has exited. Restoring resolution.")
