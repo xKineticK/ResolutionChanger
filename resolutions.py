@@ -20,6 +20,26 @@ class ResolutionManager:
         self.resolutions: Dict[str, Resolution] = {}
         self._cached_dict = {}  # Para mantener una versión en caché del diccionario
         self.load_resolutions()
+        
+    def calculate_4_3_resolution(self, original_width: int, original_height: int) -> Tuple[int, int]:
+        """Calcula la resolución 4:3 más adecuada"""
+        # Lista de resoluciones 4:3 comunes (ordenadas de mayor a menor)
+        common_4_3_resolutions = [
+            (1600, 1200),  # UXGA
+            (1400, 1050),  # SXGA+
+            (1280, 960),   # SXGA-
+            (1024, 768),   # XGA
+            (800, 600),    # SVGA
+            (640, 480)     # VGA
+        ]
+        
+        # Encontrar la resolución 4:3 más alta que sea menor o igual al ancho actual
+        for width, height in common_4_3_resolutions:
+            if width <= original_width:
+                return (width, height)
+        
+        # Si ninguna es adecuada, usar la más pequeña
+        return common_4_3_resolutions[-1]
     
     def load_resolutions(self):
         default_resolutions = {

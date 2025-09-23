@@ -146,14 +146,19 @@ class ModernResolutionChanger(QDialog):
         button_layout.addStretch()
         frame_layout.addLayout(button_layout, 5, 0, 1, 2)
 
-        # Añadir botón para resolución personalizada
+        # Añadir botones para resoluciones
         self.custom_res_button = QPushButton("Add Custom Resolution")
         self.custom_res_button.clicked.connect(self.add_custom_resolution)
         
-        # Añadirlo al layout cerca del combo de resoluciones
+        self.aspect_4_3_button = QPushButton("Use 4:3")
+        self.aspect_4_3_button.setToolTip("Calculate and use 4:3 resolution")
+        self.aspect_4_3_button.clicked.connect(self.use_4_3_resolution)
+        
+        # Añadirlos al layout cerca del combo de resoluciones
         res_layout = QHBoxLayout()
         res_layout.addWidget(self.res_combo)
         res_layout.addWidget(self.custom_res_button)
+        res_layout.addWidget(self.aspect_4_3_button)
         frame_layout.addLayout(res_layout, 1, 1)
 
         main_layout.addWidget(frame)
@@ -223,10 +228,45 @@ class ModernResolutionChanger(QDialog):
     def selected_game(self, item):
         self.game_var = item.text()
 
+    def use_4_3_resolution(self):
+        """Usa la resolución 4:3 recomendada"""
+        import win32api
+        current_width = win32api.GetSystemMetrics(0)
+        current_height = win32api.GetSystemMetrics(1)
+        
+        # Calcular resolución 4:3 recomendada
+        width, height = resolution_manager.calculate_4_3_resolution(current_width, current_height)
+        resolution_str = f"{width}x{height}"
+        
+        # Si la resolución ya existe en el combo box, simplemente seleccionarla
+        if self.res_combo.findText(resolution_str) != -1:
+            self.res_combo.setCurrentText(resolution_str)
+            self.resolution_var = resolution_str
+            printInfo(f"Selected 4:3 resolution: {resolution_str}")
+            return
+            
+        # Si no existe, añadirla
+        if resolution_manager.add_custom_resolution(width, height):
+            self.res_combo.blockSignals(True)
+            self.res_combo.addItem(resolution_str)
+            self.res_combo.setCurrentText(resolution_str)
+            self.res_combo.blockSignals(False)
+            
+            global resolutions
+            resolutions = resolution_manager.get_all_resolutions()
+            self.resolution_var = resolution_str
+            
+            printInfo(f"Added and selected 4:3 resolution: {resolution_str}")
+        else:
+            printWarning("Could not add 4:3 resolution")
+
     def play_game(self):
         self.steam_path = self.path_edit.text()
         self.get_resolution()
         if self.steam_path and self.game_var and self.resolution_var:
+            if not self.resolution_var:
+                # Si no hay resolución seleccionada, usar 4:3
+                self.use_4_3_resolution()
             open_game_in_steam(self.steam_path, self.game_var, self.resolution_var, self.games)
 
     def add_custom_resolution(self):
