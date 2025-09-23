@@ -9,12 +9,27 @@ import time
 import winreg
 from loggingLib import printInfo, printWarning, printError
 from games.steam import *
+from resolutions import ResolutionManager  # Asegúrate de que esta línea importe correctamente tu clase ResolutionManager
 
 original_width = win32api.GetSystemMetrics(0)
 original_height = win32api.GetSystemMetrics(1)
 process = None
 
+# Eliminar el diccionario resolutions del final del archivo ya que ahora está manejado por ResolutionManager
+# Mantener solo estas líneas para la gestión de resoluciones:
+resolution_manager = ResolutionManager()
+resolutions = resolution_manager.get_all_resolutions()
+
+# Asegúrate de que estas variables estén disponibles para importar
+__all__ = ['resolutions', 'info', 'open_game_in_steam', 'resolution_manager']
+
 def change_resolution(selected_resolution):
+    # Obtener las resoluciones actualizadas
+    resolutions = resolution_manager.get_all_resolutions()
+    if selected_resolution not in resolutions:
+        printError(f"Resolución no válida: {selected_resolution}")
+        return
+        
     selectedRes = resolutions[selected_resolution]
     if selectedRes != (original_width, original_height):
         printInfo(f"Cambiando resolución a {selectedRes[0]}x{selectedRes[1]}")
@@ -102,16 +117,4 @@ info = {
     "Resolution": f"{original_width}x{original_height}",
     "Aspect ratio": get_aspect_ratio(),
     "4:3 Resolution": get_recommended_resolution(get_aspect_ratio())
-}
-
-
-
-resolutions = {
-    "3840x2160": (3840, 2160),
-    "2560x1440": (2560, 1440),
-    "1920x1080": (1920, 1080),
-    "1920x1060": (1920, 1060),
-    "1600x1200": (1600, 1200),
-    "1280x1024": (1280, 1024),
-    "1280x960": (1280, 960)
 }

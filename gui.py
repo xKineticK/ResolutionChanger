@@ -1,11 +1,11 @@
 # gui.py
 from PyQt6.QtWidgets import (
     QDialog, QLabel, QLineEdit, QPushButton, QComboBox,
-    QListWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QFrame, QFileDialog, QTextEdit
+    QListWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QFrame, QFileDialog, QTextEdit, QInputDialog
 )
 from PyQt6.QtGui import QFont, QMouseEvent, QIcon
 from PyQt6.QtCore import Qt, QPoint, QSize
-from logic import resolutions, info, open_game_in_steam
+from logic import resolutions, info, open_game_in_steam, resolution_manager
 from games.steam import load_games
 from loggingLib import attach_console_widget, printInfo, printWarning, printError
 
@@ -146,6 +146,16 @@ class ModernResolutionChanger(QDialog):
         button_layout.addStretch()
         frame_layout.addLayout(button_layout, 5, 0, 1, 2)
 
+        # Añadir botón para resolución personalizada
+        self.custom_res_button = QPushButton("Add Custom Resolution")
+        self.custom_res_button.clicked.connect(self.add_custom_resolution)
+        
+        # Añadirlo al layout cerca del combo de resoluciones
+        res_layout = QHBoxLayout()
+        res_layout.addWidget(self.res_combo)
+        res_layout.addWidget(self.custom_res_button)
+        frame_layout.addLayout(res_layout, 1, 1)
+
         main_layout.addWidget(frame)
 
         # Estilos globales
@@ -218,3 +228,45 @@ class ModernResolutionChanger(QDialog):
         self.get_resolution()
         if self.steam_path and self.game_var and self.resolution_var:
             open_game_in_steam(self.steam_path, self.game_var, self.resolution_var, self.games)
+
+    def add_custom_resolution(self):
+        width, ok = QInputDialog.getInt(
+            self, "Custom Resolution", 
+            "Width:", 1920, 640, 7680
+        )
+        if ok:
+            height, ok = QInputDialog.getInt(
+                self, "Custom Resolution", 
+                "Height:", 1080, 480, 4320
+            )
+            if ok:
+                resolution_str = f"{width}x{height}"
+                
+                # Verificar si ya existe en el combo box
+                if self.res_combo.findText(resolution_str) != -1:
+                    printWarning("Resolution already exists")
+                    return
+                
+                # Intentar añadir la resolución
+                result = resolution_manager.add_custom_resolution(width, height)
+                
+                if result:
+                    try:
+                        # Bloquear señales temporalmente
+                        self.res_combo.blockSignals(True)
+                        
+                        # Actualizar el combo box
+                        self.res_combo.addItem(resolution_str)
+                        self.res_combo.setCurrentText(resolution_str)
+                        
+                        # Actualizar las resoluciones y la variable
+                        global resolutions
+                        resolutions = resolution_manager.get_all_resolutions()
+                        self.resolution_var = resolution_str
+                        
+                        printInfo(f"Added custom resolution: {resolution_str}")
+                    finally:
+                        # Asegurarse de que las señales se desbloquean
+                        self.res_combo.blockSignals(False)
+                else:
+                    printWarning("Resolution already exists")
