@@ -1,11 +1,19 @@
 import json
 import os
 from typing import Any, Dict
+from pathlib import Path
 
 class ConfigManager:
     """Gestor de configuración de la aplicación"""
     def __init__(self):
-        self.config_file = "config/settings.json"
+        # Usar AppData/Roaming para la configuración en Windows
+        if os.name == 'nt':  # Windows
+            app_data = os.environ.get('APPDATA', os.path.expanduser('~'))
+            self.config_dir = os.path.join(app_data, 'ResolutionChanger')
+        else:  # Linux/macOS
+            self.config_dir = os.path.join(os.path.expanduser('~'), '.resolutionchanger')
+        
+        self.config_file = os.path.join(self.config_dir, 'settings.json')
         self.default_config = {
             "auto_4_3": False,  # Activar 4:3 automáticamente
             "steam_path": "C:/Program Files (x86)/Steam/steam.exe"
@@ -14,7 +22,7 @@ class ConfigManager:
 
     def load_config(self) -> Dict[str, Any]:
         """Carga la configuración desde el archivo"""
-        os.makedirs("config", exist_ok=True)
+        os.makedirs(self.config_dir, exist_ok=True)
         
         try:
             with open(self.config_file, 'r') as f:

@@ -1,5 +1,55 @@
-__pycache__
-.venv
-build
-dist
-ResolutionChanger.spec
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# PyInstaller
+build/
+dist/
+*.spec
+
+# Instaladores y ejecutables
+*.exe
+*.msi
+*.dmg
+*.pkg
+*.deb
+*.rpm
+
+# Archivos temporales de Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Archivos temporales de construcción
+*.tmp
+*.temp
+*.log
+*.bak
+*.swp
+*.swo
+
+# Archivos específicos del proyecto
+ResolutionChanger-Safe-Setup.exe
+ResolutionChanger-Safe.exe
+ResolutionChanger.exe
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Sistema operativo
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
