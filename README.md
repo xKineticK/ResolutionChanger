@@ -1,172 +1,340 @@
-# Resolution Changer
-
-# Resolution Changer
-
-Una aplicación para cambiar la resolución de pantalla con funcionalidades especiales para gaming.
-
-Una aplicación para cambiar la res## 🔨 Desarrollo
-
-## ✨ Características
-
-### Requisitos
-
-- 🎮 Cambio rápido de resolución con presets comunes- Python 3.11+
-
-- 📺 Soporte especial para resoluciones 4:3 (ideal para gaming retro)- PyQt6
-
-- 🚀 Opción de configuración automática 4:3 al iniciar- PyInstaller (para builds)
-
-- 🎯 Integración con Steam para manejo automático de juegos- NSIS (para instaladores)
-
-- 💾 Configuración persistente de preferencias
-
-- 🎨 Interfaz moderna con PyQt6### Configurar Entorno de Desarrollo
-
-```powershell
-
-## 🔧 Tecnologías# Crear entorno virtual
-
-python -m venv .venv
-
-- **Python 3.11+** - Lenguaje de programación.venv\Scripts\activate
-
-- **PyQt6** - Framework de interfaz gráfica
-
-- **PyInstaller** - Empaquetado de ejecutables# Instalar dependencias
-
-- **NSIS** - Creación de instaladores profesionalespip install -r requirements.txt
-
-```
-
-## 🏗️ Arquitectura
-
-### Ejecutar en Modo Desarrollo
-
-El proyecto utiliza el patrón MVP (Model-View-Presenter):```powershell
-
-python run.py
-
-``````
-
-src/
-
-├── models/          # Lógica de datos y configuración### Crear Build de Distribución
-
-├── views/           # Interfaces de usuario```powershell
-
-├── presenters/      # Lógica de presentación y coordinaciónpython build.py
-
-└── services/        # Servicios externos (Steam, Windows API)```
-
-```
-
-Esto creará:
-
-## 🚀 Instalación y Uso- `dist/ResolutionChanger-Safe.exe` - Ejecutable optimizado
-
-- `ResolutionChanger-Safe-Setup.exe` - Instalador profesional
-
-### Opción 1: Instalador (Recomendado)
-
-1. Descargar `ResolutionChanger-Safe-Setup.exe`## 🔍 Estructura del Proyecto
-
-2. Ejecutar el instalador como administrador
-
-3. Seguir las instrucciones en pantalla```
-
-ResolutionChanger/
-
-### Opción 2: Ejecutable Portátil├── src/                     # Código fuente principal
-
-1. Descargar `ResolutionChanger-Safe.exe`│   ├── models/             
-
-2. Ejecutar directamente (requiere permisos de administrador)│   ├── views/              
-
-│   ├── presenters/         
-
-### Opción 3: Desde Código Fuente│   └── services/           
-
-```powershell├── resources/              # Recursos (iconos, configuraciones)
-
-# Clonar repositorio├── config/                 # Archivos de configuración
-
-git clone https://github.com/tuusuario/ResolutionChanger.git├── games/                  # Módulos específicos de juegos
-
-cd ResolutionChanger├── run.py                  # Punto de entrada principal
-
-├── build.py                # Script de construcción
-
-# Crear entorno virtual├── ResolutionChanger-Safe.spec  # Configuración PyInstaller
-
-python -m venv .venv├── installer-safe.nsi      # Script instalador NSIS
-
-.venv\Scripts\activate├── requirements.txt        # Dependencias Python
-
-├── version_info_enhanced.txt # Metadatos del ejecutable
-
-# Instalar dependencias└── README.md              # Este archivo
-
-pip install -r requirements.txt```con funcionalidades especiales para gaming.
+# Resolution Changer# Resolution Changer
 
 
 
-# Ejecutar aplicación## ✨ Características
+Una aplicación para cambiar la resolución de pantalla con funcionalidades especiales para gaming.# Resolution Changer
 
-python run.py
 
-```- 🎮 Cambio rápido de resolución con presets comunes
+
+## ✨ CaracterísticasUna aplicación para cambiar la resolución de pantalla con funcionalidades especiales para gaming.
+
+
+
+- 🎮 Cambio rápido de resolución con presets comunesUna aplicación para cambiar la res## 🔨 Desarrollo
 
 - 📺 Soporte especial para resoluciones 4:3 (ideal para gaming retro)
 
-## 🔨 Desarrollo- 🚀 Opción de configuración automática 4:3 al iniciar
+- 🚀 Opción de configuración automática 4:3 al iniciar## ✨ Características
 
 - 🎯 Integración con Steam para manejo automático de juegos
 
-### Requisitos- 💾 Configuración persistente de preferencias
+- 💾 Configuración persistente de preferencias### Requisitos
 
-- Python 3.11+- 🎨 Interfaz moderna con PyQt6
+- 🎨 Interfaz moderna con PyQt6
 
-- PyQt6## 🔧 Tecnologías
+- 🎮 Cambio rápido de resolución con presets comunes- Python 3.11+
 
-- PyInstaller (para builds)
+## 🔧 Tecnologías
 
-- NSIS (para instaladores)- **Python 3.11+** - Lenguaje de programación
+- 📺 Soporte especial para resoluciones 4:3 (ideal para gaming retro)- PyQt6
 
-- **PyQt6** - Framework de interfaz gráfica
+- **Python 3.11+** - Lenguaje de programación
 
-### Configurar Entorno de Desarrollo- **PyInstaller** - Empaquetado de ejecutables
+- **PyQt6** - Framework de interfaz gráfica- 🚀 Opción de configuración automática 4:3 al iniciar- PyInstaller (para builds)
 
-```powershell- **NSIS** - Creación de instaladores profesionales
+- **PyInstaller** - Empaquetado de ejecutables
 
-# Crear entorno virtual
+- **NSIS** - Creación de instaladores profesionales- 🎯 Integración con Steam para manejo automático de juegos- NSIS (para instaladores)
 
-python -m venv .venv## 🏗️ Arquitectura
 
-.venv\Scripts\activate
 
-El proyecto utiliza el patrón MVP (Model-View-Presenter):
+## 🏗️ Arquitectura- 💾 Configuración persistente de preferencias
 
-# Instalar dependencias
 
-pip install -r requirements.txt```
 
-```src/
+El proyecto utiliza el patrón MVP (Model-View-Presenter):- 🎨 Interfaz moderna con PyQt6### Configurar Entorno de Desarrollo
 
-├── models/          # Lógica de datos y configuración
 
-### Ejecutar en Modo Desarrollo├── views/           # Interfaces de usuario
 
-```powershell├── presenters/      # Lógica de presentación y coordinación
+``````powershell
 
-python run.py└── services/        # Servicios externos (Steam, Windows API)
+src/
+
+├── models/          # Lógica de datos y configuración## 🔧 Tecnologías# Crear entorno virtual
+
+├── views/           # Interfaces de usuario
+
+├── presenters/      # Lógica de presentación y coordinaciónpython -m venv .venv
+
+└── services/        # Servicios externos (Steam, Windows API)
+
+```- **Python 3.11+** - Lenguaje de programación.venv\Scripts\activate
+
+
+
+## 🚀 Instalación y Uso- **PyQt6** - Framework de interfaz gráfica
+
+
+
+### Opción 1: Instalador (Recomendado)- **PyInstaller** - Empaquetado de ejecutables# Instalar dependencias
+
+1. Descargar `ResolutionChanger-Safe-Setup.exe`
+
+2. Ejecutar el instalador como administrador- **NSIS** - Creación de instaladores profesionalespip install -r requirements.txt
+
+3. Seguir las instrucciones en pantalla
+
+```
+
+### Opción 2: Ejecutable Portátil
+
+1. Descargar `ResolutionChanger-Safe.exe`## 🏗️ Arquitectura
+
+2. Ejecutar directamente (requiere permisos de administrador)
+
+### Ejecutar en Modo Desarrollo
+
+### Opción 3: Desde Código Fuente
+
+```powershellEl proyecto utiliza el patrón MVP (Model-View-Presenter):```powershell
+
+# Clonar repositorio
+
+git clone https://github.com/xKineticK/ResolutionChanger.gitpython run.py
+
+cd ResolutionChanger
 
 ``````
 
+# Crear entorno virtual
+
+python -m venv .venvsrc/
+
+.venv\Scripts\activate
+
+├── models/          # Lógica de datos y configuración### Crear Build de Distribución
+
+# Instalar dependencias
+
+pip install -r requirements.txt├── views/           # Interfaces de usuario```powershell
 
 
-### Crear Build de Distribución## 🚀 Instalación y Uso
+
+# Ejecutar aplicación├── presenters/      # Lógica de presentación y coordinaciónpython build.py
+
+python run.py
+
+```└── services/        # Servicios externos (Steam, Windows API)```
+
+
+
+## 🔨 Desarrollo```
+
+
+
+### RequisitosEsto creará:
+
+- Python 3.11+
+
+- PyQt6## 🚀 Instalación y Uso- `dist/ResolutionChanger-Safe.exe` - Ejecutable optimizado
+
+- PyInstaller (para builds)
+
+- NSIS (para instaladores)- `ResolutionChanger-Safe-Setup.exe` - Instalador profesional
+
+
+
+### Configurar Entorno de Desarrollo### Opción 1: Instalador (Recomendado)
 
 ```powershell
+
+# Crear entorno virtual1. Descargar `ResolutionChanger-Safe-Setup.exe`## 🔍 Estructura del Proyecto
+
+python -m venv .venv
+
+.venv\Scripts\activate2. Ejecutar el instalador como administrador
+
+
+
+# Instalar dependencias3. Seguir las instrucciones en pantalla```
+
+pip install -r requirements.txt
+
+```ResolutionChanger/
+
+
+
+### Ejecutar en Modo Desarrollo### Opción 2: Ejecutable Portátil├── src/                     # Código fuente principal
+
+```powershell
+
+python run.py1. Descargar `ResolutionChanger-Safe.exe`│   ├── models/             
+
+```
+
+2. Ejecutar directamente (requiere permisos de administrador)│   ├── views/              
+
+### Crear Build de Distribución
+
+```powershell│   ├── presenters/         
+
+python build.py
+
+```### Opción 3: Desde Código Fuente│   └── services/           
+
+
+
+Esto creará:```powershell├── resources/              # Recursos (iconos, configuraciones)
+
+- `dist/ResolutionChanger-Safe.exe` - Ejecutable optimizado
+
+- `ResolutionChanger-Safe-Setup.exe` - Instalador profesional# Clonar repositorio├── config/                 # Archivos de configuración
+
+
+
+## 🔍 Estructura del Proyectogit clone https://github.com/tuusuario/ResolutionChanger.git├── games/                  # Módulos específicos de juegos
+
+
+
+```cd ResolutionChanger├── run.py                  # Punto de entrada principal
+
+ResolutionChanger/
+
+├── src/                     # Código fuente principal├── build.py                # Script de construcción
+
+│   ├── models/             
+
+│   ├── views/              # Crear entorno virtual├── ResolutionChanger-Safe.spec  # Configuración PyInstaller
+
+│   ├── presenters/         
+
+│   └── services/           python -m venv .venv├── installer-safe.nsi      # Script instalador NSIS
+
+├── resources/              # Recursos (iconos, configuraciones)
+
+├── config/                 # Archivos de configuración.venv\Scripts\activate├── requirements.txt        # Dependencias Python
+
+├── games/                  # Módulos específicos de juegos
+
+├── run.py                  # Punto de entrada principal├── version_info_enhanced.txt # Metadatos del ejecutable
+
+├── build.py                # Script de construcción
+
+├── ResolutionChanger-Safe.spec  # Configuración PyInstaller# Instalar dependencias└── README.md              # Este archivo
+
+├── installer-safe.nsi      # Script instalador NSIS
+
+├── requirements.txt        # Dependencias Pythonpip install -r requirements.txt```con funcionalidades especiales para gaming.
+
+├── version_info_enhanced.txt # Metadatos del ejecutable
+
+└── README.md              # Este archivo
+
+```
+
+# Ejecutar aplicación## ✨ Características
+
+## ⚠️ Consideraciones de Antivirus
+
+python run.py
+
+El ejecutable está optimizado para minimizar falsas detecciones de antivirus:
+
+```- 🎮 Cambio rápido de resolución con presets comunes
+
+- **UPX deshabilitado** - Sin compresión adicional
+
+- **Módulos excluidos** - Se excluyen módulos que pueden ser marcados como sospechosos- 📺 Soporte especial para resoluciones 4:3 (ideal para gaming retro)
+
+- **Metadatos completos** - Información detallada del archivo
+
+- **Firma digital** - (Opcional) Para mayor confianza## 🔨 Desarrollo- 🚀 Opción de configuración automática 4:3 al iniciar
+
+
+
+Si tu antivirus detecta el archivo:- 🎯 Integración con Steam para manejo automático de juegos
+
+1. Añadir excepción para la carpeta de instalación
+
+2. Reportar falso positivo al proveedor del antivirus### Requisitos- 💾 Configuración persistente de preferencias
+
+3. Usar el código fuente para ejecutar directamente
+
+- Python 3.11+- 🎨 Interfaz moderna con PyQt6
+
+## 📝 Licencia
+
+- PyQt6## 🔧 Tecnologías
+
+Este proyecto es de código abierto. Consulta el archivo LICENSE para más detalles.
+
+- PyInstaller (para builds)
+
+## 🤝 Contribuciones
+
+- NSIS (para instaladores)- **Python 3.11+** - Lenguaje de programación
+
+Las contribuciones son bienvenidas. Por favor:
+
+- **PyQt6** - Framework de interfaz gráfica
+
+1. Fork del proyecto
+
+2. Crear rama para tu feature (`git checkout -b feature/AmazingFeature`)### Configurar Entorno de Desarrollo- **PyInstaller** - Empaquetado de ejecutables
+
+3. Commit de cambios (`git commit -m 'Add some AmazingFeature'`)
+
+4. Push a la rama (`git push origin feature/AmazingFeature`)```powershell- **NSIS** - Creación de instaladores profesionales
+
+5. Abrir Pull Request
+
+# Crear entorno virtual
+
+## 🐛 Reportar Problemas
+
+python -m venv .venv## 🏗️ Arquitectura
+
+Si encuentras algún problema:
+
+.venv\Scripts\activate
+
+1. Revisar issues existentes
+
+2. Crear nuevo issue con:El proyecto utiliza el patrón MVP (Model-View-Presenter):
+
+   - Descripción detallada del problema
+
+   - Pasos para reproducir# Instalar dependencias
+
+   - Sistema operativo y versión
+
+   - Logs de error (si aplica)pip install -r requirements.txt```
+
+
+
+## 📋 Changelog```src/
+
+
+
+### v1.0.0 (Actual)├── models/          # Lógica de datos y configuración
+
+- ✅ Implementación MVP completa
+
+- ✅ Funcionalidad 4:3 con auto-startup### Ejecutar en Modo Desarrollo├── views/           # Interfaces de usuario
+
+- ✅ Integración Steam
+
+- ✅ Instalador profesional```powershell├── presenters/      # Lógica de presentación y coordinación
+
+- ✅ Optimización anti-antivirus
+
+- ✅ Configuración persistentepython run.py└── services/        # Servicios externos (Steam, Windows API)
+
+
+
+## 🔮 Roadmap``````
+
+
+
+- [ ] Soporte para múltiples monitores
+
+- [ ] Perfiles de resolución personalizados
+
+- [ ] Integración con más plataformas de gaming### Crear Build de Distribución## 🚀 Instalación y Uso
+
+- [ ] Modo oscuro/claro
+
+- [ ] Notificaciones del sistema```powershell
 
 python build.py### Opción 1: Instalador (Recomendado)
 
