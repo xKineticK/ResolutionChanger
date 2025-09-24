@@ -1,0 +1,203 @@
+/* Estilos globales */
+* {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+}
+
+QWidget {
+    background-color: #1b2838;
+    color: #c7d5e0;
+}
+
+/* Barra de título */
+#titleBar {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #2a475e, stop:1 #1b2838);
+}
+
+#titleLabel {
+    color: #c7d5e0;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: transparent;
+}
+
+/* Botones de la barra de título */
+#titleButton {
+    background-color: transparent;
+    border: none;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 10px;
+    color: #c7d5e0;
+}
+
+#titleButton:hover {
+    background-color: #3d6c8d;
+}
+
+#titleButton:pressed {
+    background-color: #2a475e;
+}
+
+#exitButton {
+    background-color: transparent;
+    border: none;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    color: #c7d5e0;
+}
+
+#exitButton:hover {
+    background-color: #c75050;
+}
+
+#exitButton:pressed {
+    background-color: #b33030;
+}
+
+/* Labels */
+QLabel[type="section"] {
+    color: #66c0f4;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Campos de entrada */
+QLineEdit {
+    background-color: #151f2d;
+    border: 1px solid #244861;
+    border-radius: 3px;
+    color: #c7d5e0;
+    padding: 5px;
+    selection-background-color: #244861;
+}
+
+QLineEdit:focus {
+    border: 1px solid #66c0f4;
+}
+
+/* Botones */
+QPushButton {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #4c237c, stop:1 #2b5788);
+    border: none;
+    border-radius: 2px;
+    color: #c7d5e0;
+    padding: 5px 15px;
+    font-weight: bold;
+}
+
+QPushButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #5c2b96, stop:1 #356baa);
+}
+
+QPushButton:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #3d1b66, stop:1 #1f3f64);
+}
+
+/* Lista de juegos */
+QListWidget {
+    background-color: #151f2d;
+    border: 1px solid #244861;
+    border-radius: 3px;
+    color: #c7d5e0;
+    padding: 5px;
+}
+
+QListWidget::item {
+    padding: 8px;
+    border-radius: 2px;
+}
+
+QListWidget::item:selected {
+    background-color: #244861;
+    color: #ffffff;
+}
+
+QListWidget::item:hover {
+    background-color: #193c5a;
+}
+
+/* ComboBox */
+QComboBox {
+    background-color: #151f2d;
+    border: 1px solid #244861;
+    border-radius: 2px;
+    color: #c7d5e0;
+    padding: 5px;
+    min-width: 6em;
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 20px;
+}
+
+QComboBox::down-arrow {
+    image: none;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #c7d5e0;
+    margin-right: 5px;
+}
+
+QComboBox:on {
+    border: 1px solid #66c0f4;
+}
+
+/* Consola de logs */
+QTextEdit {
+    background-color: transparent;
+    border: none;
+    color: #8f98a0;
+    font-family: 'Consolas', monospace;
+    font-size: 12px;
+    padding: 8px;
+}
+
+/* Scrollbars */
+QScrollBar:vertical {
+    border: none;
+    background: #151f2d;
+    width: 8px;
+    margin: 0;
+}
+
+QScrollBar::handle:vertical {
+    background: #244861;
+    min-height: 20px;
+    border-radius: 4px;
+}
+
+QScrollBar::add-line:vertical, 
+QScrollBar::sub-line:vertical {
+    height: 0;
+    border: none;
+    background: none;
+}
+
+/* Play Button */
+#playButton {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #4c237c, stop:1 #2b5788);
+    border: none;
+    border-radius: 3px;
+    color: #ffffff;
+    padding: 5px 15px;
+    font-weight: bold;
+    font-size: 14px;
+    height: 50px;
+}
+
+#playButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #5c2b96, stop:1 #356baa);
+}
+
+#playButton:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #3d1b66, stop:1 #1f3f64);
+}
