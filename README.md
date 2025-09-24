@@ -32,16 +32,19 @@ src/
 
 ##  Instalación y Uso
 
-### Opción 1: Instalador (Recomendado)
-1. Descargar ResolutionChanger-Safe-Setup.exe
-2. Ejecutar el instalador como administrador
-3. Seguir las instrucciones en pantalla
+### Para Usuarios Finales
+Descarga los archivos ejecutables desde la sección [Releases](https://github.com/xKineticK/ResolutionChanger/releases):
 
-### Opción 2: Ejecutable Portátil
-1. Descargar ResolutionChanger-Safe.exe
-2. Ejecutar directamente (requiere permisos de administrador)
+**Opción 1: Instalador (Recomendado)**
+- Descargar `ResolutionChanger-Setup.exe`
+- Ejecutar como administrador
+- Seguir las instrucciones
 
-### Opción 3: Desde Código Fuente
+**Opción 2: Ejecutable Portátil**
+- Descargar `ResolutionChanger.exe`
+- Ejecutar directamente (requiere permisos de administrador)
+
+### Para Desarrolladores
 ```powershell
 # Clonar repositorio
 git clone https://github.com/xKineticK/ResolutionChanger.git
@@ -58,71 +61,36 @@ pip install -r requirements.txt
 python run.py
 ```
 
-##  Desarrollo
+## 🔍 Estructura del Proyecto
 
-### Requisitos
-- Python 3.11+
-- PyQt6
-- PyInstaller (para builds)
-- NSIS (para instaladores)
-
-### Configurar Entorno de Desarrollo
-```powershell
-# Crear entorno virtual
-python -m venv .venv
-.venv\Scripts\activate
-
-# Instalar dependencias
-pip install -r requirements.txt
+```
+ResolutionChanger/
+├── src/                # Código fuente principal
+│   ├── models/         # Lógica de datos y configuración
+│   ├── views/          # Interfaces de usuario
+│   ├── presenters/     # Lógica de presentación
+│   └── services/       # Servicios externos (Steam, Windows API)
+├── config/             # Archivos de configuración
+├── resources/          # Recursos (iconos, imágenes)
+├── run.py             # Punto de entrada principal
+├── requirements.txt    # Dependencias Python
+└── README.md          # Este archivo
 ```
 
-### Ejecutar en Modo Desarrollo
-```powershell
-python run.py
-```
+## ⚠️ Nota sobre Antivirus
 
-### Crear Build de Distribución
-```powershell
-python build.py
-```
+Algunos antivirus pueden marcar ejecutables de PyInstaller como falsos positivos. Si esto ocurre:
+1. Añadir excepción para el archivo descargado
+2. Ejecutar desde código fuente usando `python run.py`
 
-Esto creará:
-- dist/ResolutionChanger-Safe.exe - Ejecutable optimizado
-- ResolutionChanger-Safe-Setup.exe - Instalador profesional
+## 📝 Licencia
 
-##  Consideraciones de Antivirus
+Este proyecto es de código abierto bajo licencia MIT.
 
-El ejecutable está optimizado para minimizar falsas detecciones de antivirus:
+## 🤝 Contribuciones
 
-- **UPX deshabilitado** - Sin compresión adicional
-- **Módulos excluidos** - Se excluyen módulos que pueden ser marcados como sospechosos
-- **Metadatos completos** - Información detallada del archivo
-
-Si tu antivirus detecta el archivo:
-1. Añadir excepción para la carpeta de instalación
-2. Reportar falso positivo al proveedor del antivirus
-3. Usar el código fuente para ejecutar directamente
-
-##  Licencia
-
-Este proyecto es de código abierto. Consulta el archivo LICENSE para más detalles.
-
-##  Contribuciones
-
-Las contribuciones son bienvenidas. Por favor:
-
+Las contribuciones son bienvenidas:
 1. Fork del proyecto
 2. Crear rama para tu feature
-3. Commit de cambios
-4. Push a la rama
-5. Abrir Pull Request
-
-##  Changelog
-
-### v1.0.0 (Actual)
--  Implementación MVP completa
--  Funcionalidad 4:3 con auto-startup
--  Integración Steam
--  Instalador profesional
--  Optimización anti-antivirus
--  Configuración persistente
+3. Commit de cambios 
+4. Abrir Pull Request

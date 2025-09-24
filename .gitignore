@@ -11,10 +11,16 @@ ENV/
 env.bak/
 venv.bak/
 
-# PyInstaller
+# PyInstaller - Todo lo relacionado con builds
 build/
 dist/
 *.spec
+
+# Scripts de construcción y distribución
+build.py
+build_safe.py
+installer*.nsi
+version_info*.txt
 
 # Instaladores y ejecutables
 *.exe
@@ -24,23 +30,23 @@ dist/
 *.deb
 *.rpm
 
+# Documentación de build (no necesaria para usuarios)
+ANTIVIRUS_GUIDE.md
+CODE_SIGNING_GUIDE.md
+PROJECT_SUMMARY.md
+
 # Archivos temporales de Windows
 Thumbs.db
 ehthumbs.db
 Desktop.ini
 
-# Archivos temporales de construcción
+# Archivos temporales
 *.tmp
 *.temp
 *.log
 *.bak
 *.swp
 *.swo
-
-# Archivos específicos del proyecto
-ResolutionChanger-Safe-Setup.exe
-ResolutionChanger-Safe.exe
-ResolutionChanger.exe
 
 # IDE
 .vscode/
