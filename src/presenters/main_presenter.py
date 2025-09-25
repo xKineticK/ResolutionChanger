@@ -35,9 +35,10 @@ class MainPresenter:
         self.game_model.set_games(games)
         self.view.update_game_list([game.name for game in games])
         
-        # Cargar resoluciones
+        # Cargar resoluciones (incluir opción "No seleccionado")
         resolutions = self.resolution_model.get_all_resolutions()
-        self.view.update_resolution_list(list(resolutions.keys()))
+        resolution_list = ["No seleccionado"] + list(resolutions.keys())
+        self.view.update_resolution_list(resolution_list)
         
         # Cargar información del sistema
         system_info = self.windows_service.get_display_info()
@@ -68,21 +69,25 @@ class MainPresenter:
                 if self.resolution_model.get_resolution(last_resolution):
                     self.view.set_current_resolution(last_resolution)
                     self.view.log_info(f"Restored last resolution: {last_resolution}")
+                    return  # No calcular 4:3 si se restauró la última
         
-        # Si está activado el 4:3 automático y NO está recordar última, calcular resolución 4:3
-        elif auto_4_3:
+        # Si está activado el 4:3 automático, calcular resolución 4:3
+        if auto_4_3:
             self.calculate_4_3_resolution()
+        else:
+            # Establecer "No seleccionado" por defecto
+            self.view.set_current_resolution("No seleccionado")
 
     def on_resolution_change(self, resolution_str: str) -> None:
         """Maneja el cambio de resolución seleccionada"""
+        if resolution_str == "No seleccionado":
+            self.view.log_info("No resolution selected")
+            return
+            
         resolution = self.resolution_model.get_resolution(resolution_str)
         if resolution:
             self.view.log_info(f"Selected resolution: {resolution_str}")
-            
-            # Guardar como última resolución si está habilitado
-            remember_last = self.config_manager.get("remember_last_resolution")
-            if remember_last:
-                self.config_manager.set("last_resolution", resolution_str)
+            # NO guardamos aquí, solo cuando se hace clic en Play
 
     def on_game_select(self, game_name: str) -> None:
         """Maneja la selección de juego"""
@@ -98,14 +103,20 @@ class MainPresenter:
             return
 
         resolution = self.view.get_current_resolution()
-        if not resolution:
-            self.view.show_error("Please select a resolution")
+        if not resolution or resolution == "No seleccionado":
+            self.view.show_error("Please select a resolution first")
             return
 
         steam_path = self.view.get_steam_path()
         if not steam_path:
             self.view.show_error("Please set Steam path first")
             return
+
+        # Guardar como última resolución si está habilitado recordar última
+        remember_last = self.config_manager.get("remember_last_resolution")
+        if remember_last:
+            self.config_manager.set("last_resolution", resolution)
+            self.view.log_info(f"Saved as last resolution: {resolution}")
 
         # Cambiar resolución y lanzar juego
         res_tuple = self.resolution_model.get_resolution(resolution)
@@ -180,7 +191,8 @@ class MainPresenter:
         if self.resolution_model.add_resolution(width, height):
             self.view.log_info(f"Added new resolution: {resolution_str}")
             resolutions = self.resolution_model.get_all_resolutions()
-            self.view.update_resolution_list(list(resolutions.keys()))
+            resolution_list = ["No seleccionado"] + list(resolutions.keys())
+            self.view.update_resolution_list(resolution_list)
         
         # Seleccionar la resolución
         self.view.set_current_resolution(resolution_str)
@@ -232,11 +244,8 @@ class MainPresenter:
             self.view.set_auto_4_3(False)
             self.view.log_info("Auto 4:3 disabled (remember last resolution enabled)")
             
-            # Guardar la resolución actual como última
-            current_resolution = self.view.get_current_resolution()
-            if current_resolution:
-                self.config_manager.set("last_resolution", current_resolution)
-                self.view.log_info(f"Saved current resolution as last: {current_resolution}")
+            # NO guardamos la resolución actual aquí
+            # Solo se guardará cuando el usuario haga clic en Play
         
         self.view.log_info(f"Remember last resolution {'enabled' if enabled else 'disabled'}")
         
@@ -259,9 +268,10 @@ class MainPresenter:
             resolution_str = f"{width}x{height}"
             self.view.log_info(f"Added custom resolution: {resolution_str}")
             
-            # Actualizar la lista de resoluciones en la vista
+            # Actualizar la lista de resoluciones en la vista (incluir "No seleccionado")
             resolutions = self.resolution_model.get_all_resolutions()
-            self.view.update_resolution_list(list(resolutions.keys()))
+            resolution_list = ["No seleccionado"] + list(resolutions.keys())
+            self.view.update_resolution_list(resolution_list)
             
             # Seleccionar la nueva resolución
             self.view.set_current_resolution(resolution_str)
