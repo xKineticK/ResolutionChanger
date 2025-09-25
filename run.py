@@ -27,6 +27,9 @@ def main():
         # Crear y conectar el presenter
         presenter = MainPresenter(main_window, game_model, resolution_model)
         
+        # Asignar referencia del presenter a la vista para resoluciones personalizadas
+        main_window.presenter = presenter
+        
         # Mostrar la ventana
         main_window.show()
         log_info("Application started successfully")

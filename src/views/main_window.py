@@ -17,6 +17,8 @@ class MainWindow(QDialog):
     play_clicked = pyqtSignal()
     aspect_ratio_clicked = pyqtSignal()  # Nueva señal para el botón 4:3
     auto_4_3_changed = pyqtSignal(bool)  # Señal para la casilla de 4:3 automático
+    custom_resolution_requested = pyqtSignal()  # Señal para resolución personalizada
+    remember_last_changed = pyqtSignal(bool)  # Señal para recordar última resolución
     
     def __init__(self):
         super().__init__()
@@ -139,6 +141,13 @@ class MainWindow(QDialog):
         auto_4_3_layout.addWidget(self.auto_4_3_check)
         auto_4_3_layout.addStretch()
         
+        # Checkbox para recordar última resolución
+        remember_last_layout = QHBoxLayout()
+        self.remember_last_check = QCheckBox("Remember last resolution")
+        self.remember_last_check.stateChanged.connect(self._on_remember_last_changed)
+        remember_last_layout.addWidget(self.remember_last_check)
+        remember_last_layout.addStretch()
+        
         # System Info
         info_label = QLabel("SYSTEM INFO")
         info_label.setProperty("type", "section")
@@ -162,6 +171,7 @@ class MainWindow(QDialog):
         layout.addWidget(self.resolution_combo)
         layout.addLayout(resolution_buttons)
         layout.addLayout(auto_4_3_layout)
+        layout.addLayout(remember_last_layout)
         layout.addWidget(info_label)
         layout.addWidget(self.info_label)
         layout.addWidget(self.console)
@@ -203,16 +213,99 @@ class MainWindow(QDialog):
         
     def _add_custom_resolution(self):
         """Abre el diálogo para añadir resolución personalizada"""
-        pass  # Implementar cuando sea necesario
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Add Custom Resolution")
+        dialog.setModal(True)
+        dialog.resize(300, 150)
+        
+        layout = QVBoxLayout(dialog)
+        
+        # Campo de ancho
+        width_label = QLabel("Width:")
+        width_input = QLineEdit()
+        width_input.setPlaceholderText("e.g., 1920")
+        
+        # Campo de altura
+        height_label = QLabel("Height:")
+        height_input = QLineEdit()
+        height_input.setPlaceholderText("e.g., 1080")
+        
+        # Botones
+        button_layout = QHBoxLayout()
+        ok_button = QPushButton("OK")
+        cancel_button = QPushButton("Cancel")
+        
+        button_layout.addWidget(ok_button)
+        button_layout.addWidget(cancel_button)
+        
+        # Agregar widgets al layout
+        layout.addWidget(width_label)
+        layout.addWidget(width_input)
+        layout.addWidget(height_label)
+        layout.addWidget(height_input)
+        layout.addLayout(button_layout)
+        
+        # Conectar botones
+        cancel_button.clicked.connect(dialog.reject)
+        
+        def on_ok():
+            try:
+                width = int(width_input.text().strip())
+                height = int(height_input.text().strip())
+                
+                if width <= 0 or height <= 0:
+                    QMessageBox.warning(dialog, "Invalid Input", "Width and height must be positive numbers")
+                    return
+                    
+                # Notificar al presenter
+                if hasattr(self, 'presenter'):
+                    self.presenter.add_custom_resolution(width, height)
+                
+                dialog.accept()
+                
+            except ValueError:
+                QMessageBox.warning(dialog, "Invalid Input", "Please enter valid numbers for width and height")
+        
+        ok_button.clicked.connect(on_ok)
+        
+        # Mostrar el diálogo
+        dialog.exec()
         
     def _on_auto_4_3_changed(self, state: int):
         """Maneja cambios en la casilla de verificación de 4:3 automático"""
         is_checked = state == Qt.CheckState.Checked.value
+        
+        # Si se activa auto 4:3, desactivar remember last
+        if is_checked:
+            self.remember_last_check.blockSignals(True)
+            self.remember_last_check.setChecked(False)
+            self.remember_last_check.blockSignals(False)
+            
         self.auto_4_3_changed.emit(is_checked)
+        
+    def _on_remember_last_changed(self, state: int):
+        """Maneja cambios en la casilla de verificación de recordar última resolución"""
+        is_checked = state == Qt.CheckState.Checked.value
+        
+        # Si se activa remember last, desactivar auto 4:3
+        if is_checked:
+            self.auto_4_3_check.blockSignals(True)
+            self.auto_4_3_check.setChecked(False)
+            self.auto_4_3_check.blockSignals(False)
+            
+        self.remember_last_changed.emit(is_checked)
         
     def set_auto_4_3(self, enabled: bool):
         """Establece el estado de la casilla de verificación de 4:3 automático"""
+        self.auto_4_3_check.blockSignals(True)
         self.auto_4_3_check.setChecked(enabled)
+        self.auto_4_3_check.blockSignals(False)
+        
+    def set_remember_last(self, enabled: bool):
+        """Establece el estado de la casilla de verificación de recordar última"""
+        self.remember_last_check.blockSignals(True)
+        self.remember_last_check.setChecked(enabled)
+        self.remember_last_check.blockSignals(False)
         
     # Métodos públicos para el presenter
     def update_game_list(self, games: list):
@@ -249,6 +342,18 @@ class MainWindow(QDialog):
         QMessageBox.critical(self, "Error", message)
         log_error(message)
         
+    def show_info(self, message: str):
+        """Muestra un mensaje informativo"""
+        QMessageBox.information(self, "Information", message)
+        
     def log_info(self, message: str):
         """Registra un mensaje informativo"""
         log_info(message)
+        
+    def log_warning(self, message: str):
+        """Registra un mensaje de advertencia"""
+        log_warning(message)
+        
+    def log_error(self, message: str):
+        """Registra un mensaje de error"""
+        log_error(message)

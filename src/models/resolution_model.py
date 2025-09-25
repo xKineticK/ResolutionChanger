@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Dict, Tuple, List, Optional
 import json
 import os
+import shutil
 
 @dataclass
 class Resolution:
@@ -16,7 +17,22 @@ class Resolution:
 
 class ResolutionModel:
     def __init__(self):
-        self.config_file = "config/resolutions.json"
+        # Usar AppData para tener permisos de escritura
+        app_data = os.path.join(os.path.expanduser("~"), "AppData", "Roaming", "ResolutionChanger")
+        os.makedirs(app_data, exist_ok=True)
+        self.config_file = os.path.join(app_data, "resolutions.json")
+        
+        # Si no existe el archivo en AppData, copiarlo desde la instalación
+        if not os.path.exists(self.config_file):
+            try:
+                # Intentar cargar desde la carpeta de instalación como plantilla
+                install_config = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "config", "resolutions.json")
+                if os.path.exists(install_config):
+                    import shutil
+                    shutil.copy2(install_config, self.config_file)
+            except:
+                pass  # Si falla, usará los valores por defecto
+        
         self.resolutions: Dict[str, Resolution] = {}
         self._cached_dict = {}
         self.load_resolutions()
@@ -30,8 +46,6 @@ class ResolutionModel:
             "1600x1200": (1600, 1200),
             "1280x960": (1280, 960)
         }
-        
-        os.makedirs("config", exist_ok=True)
         
         try:
             with open(self.config_file, 'r') as f:
@@ -77,14 +91,33 @@ class ResolutionModel:
         """Devuelve todas las resoluciones disponibles"""
         return self._cached_dict.copy()
 
-    def calculate_4_3_resolution(self, current_width: int, current_height: int) -> Tuple[int, int]:
+    def calculate_4_3_resolution(self, current_width: int, current_height: int, available_resolutions=None) -> Tuple[int, int]:
         """Calcula la resolución 4:3 más adecuada basada en la resolución actual.
         
-        El cálculo se hace de la siguiente manera:
-        1. Calcula el alto objetivo manteniendo el mismo ancho (4:3)
-        2. Calcula el ancho objetivo manteniendo el mismo alto (4:3)
-        3. Elige la mejor opción que quepa en la pantalla
+        Si se proporcionan available_resolutions, busca la mejor 4:3 disponible en el sistema.
+        Sino, usa el método original de cálculo.
         """
+        
+        # Si tenemos las resoluciones disponibles, usarlas para encontrar la mejor 4:3
+        if available_resolutions:
+            # Filtrar solo las resoluciones 4:3 disponibles
+            four_three_resolutions = []
+            for width, height in available_resolutions:
+                ratio = round(width / height, 2)
+                if abs(ratio - 4/3) < 0.05:  # Tolerancia para 4:3 (1.33)
+                    four_three_resolutions.append((width, height))
+            
+            if four_three_resolutions:
+                # Ordenar por área (mayor a menor) y tomar la más grande que quepa
+                four_three_resolutions.sort(key=lambda x: x[0] * x[1], reverse=True)
+                for width, height in four_three_resolutions:
+                    if width <= current_width and height <= current_height:
+                        return (width, height)
+                
+                # Si ninguna cabe, tomar la más pequeña disponible
+                return four_three_resolutions[-1]
+        
+        # Método original como fallback
         # Calcular posibles resoluciones 4:3
         width_based = (current_width, int(current_width * 3/4))  # mantiene el ancho
         height_based = (int(current_height * 4/3), current_height)  # mantiene el alto
